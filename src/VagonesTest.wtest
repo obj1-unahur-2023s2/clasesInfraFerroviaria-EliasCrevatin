@@ -1,0 +1,48 @@
+import Vagones.*
+
+describe "Vagones" {
+	const pasajero_1 = new VagonDePasajeros(ancho=2, largo=10, tieneBanio=true)
+	const pasajero_2 = new VagonDePasajeros(ancho=4, largo=7, tieneBanio=false)
+	
+	const carga_1 = new VagonDeCarga(cargaMaximaIdeal=8000 , maderasSueltas=5)
+	const carga_2 = new VagonDeCarga(cargaMaximaIdeal=8000 , maderasSueltas=2)
+	
+	const dormitorio_1= new VagonesDormitorio(compartimientos=12, camasPorCompartimiento=4)
+	
+	method initialize(){
+		pasajero_2.estaOrdenado(false)
+	}
+	
+	test "cantidad maxima de Pasajeros" {
+		assert.equals(80, pasajero_1.capacidadPasajeros())
+		assert.equals(70-15, pasajero_2.capacidadPasajeros())
+		assert.equals(0, carga_1.capacidadDePasajeros())
+		assert.equals(48, dormitorio_1.capacidadDePasajeros())
+	}
+	
+	test "peso maximo" {
+		assert.equals(2000 + 80 * 80 + 300, pasajero_1.pesoMaximo())
+		assert.equals(2000 + 80 * 55 + 800, pasajero_2.pesoMaximo())
+		assert.equals(7500, carga_1.pesoMaximo())
+		assert.equals(7200 + 1500, carga_2.pesoMaximo())
+		assert.equals(4000 + 80 * 48 + 1200, dormitorio_1.pesoMaximo())	
+	}
+	
+	test "Carga puede transportar" {	
+		assert.equals(300, pasajero_1.cargaMaxima())
+		assert.equals(800, pasajero_2.cargaMaxima())
+		assert.equals(6000, carga_1.cargaMaxima())
+		assert.equals(7200, carga_2.cargaMaxima())
+		assert.equals(1200, dormitorio_1.cargaMaxima())
+	}
+	
+	test "tiene Banios" {
+		assert.that(pasajero_1.tieneBanio())
+		assert.notThat(pasajero_2.tieneBanio())
+		assert.notThat(carga_1.tieneBanio())
+		assert.that(dormitorio_1.tieneBanio())		
+	}
+	
+	
+	
+}
